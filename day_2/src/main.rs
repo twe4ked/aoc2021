@@ -21,33 +21,21 @@ fn main() {
         })
         .collect();
 
-    let mut x = 0;
-    let mut y = 0;
-    for direction in &input {
-        match direction {
-            Direction::Up(n) => y -= n,
-            Direction::Down(n) => y += n,
-            Direction::Forward(n) => x += n,
-        }
-    }
+    let (x, y) = input.iter().fold((0, 0), |(x, y), d| match d {
+        Direction::Up(n) => (x, y - n),
+        Direction::Down(n) => (x, y + n),
+        Direction::Forward(n) => (x + n, y),
+    });
     let part_1 = x * y;
 
     println!("Part 1: {}", part_1);
     assert_eq!(2147104, part_1);
 
-    let mut a = 0;
-    let mut x = 0;
-    let mut y = 0;
-    for direction in input {
-        match direction {
-            Direction::Up(n) => a -= n,
-            Direction::Down(n) => a += n,
-            Direction::Forward(n) => {
-                x += n;
-                y += a * n;
-            }
-        }
-    }
+    let (_a, x, y) = input.iter().fold((0, 0, 0), |(a, x, y), d| match d {
+        Direction::Up(n) => (a - n, x, y),
+        Direction::Down(n) => (a + n, x, y),
+        Direction::Forward(n) => (a, x + n, y + a * n),
+    });
     let part_2 = x * y;
 
     println!("Part 2: {}", part_2);

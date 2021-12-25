@@ -45,9 +45,9 @@ impl PolymerTemplate {
 
 fn main() {
     let input = include_str!("../input");
-    let mut parts = input.split("\n\n");
-    let mut polymer_template = PolymerTemplate::new(parts.next().unwrap());
-    let pair_insertion_rules = parse_pair_insertion_rules(parts.next().unwrap());
+    let (polymer_template, pair_insertion_rules) = input.split_once("\n\n").unwrap();
+    let mut polymer_template = PolymerTemplate::new(polymer_template);
+    let pair_insertion_rules = parse_pair_insertion_rules(pair_insertion_rules);
 
     for _ in 0..10 {
         polymer_template.step(&pair_insertion_rules);

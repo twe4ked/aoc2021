@@ -1,6 +1,5 @@
 use std::collections::HashSet as Set;
 use std::convert::TryInto;
-use std::str::Split;
 
 //   0:      1:      2:      3:      4:
 //  aaaa    ....    aaaa    aaaa    ....
@@ -49,20 +48,17 @@ fn main() {
 // Each entry consists of ten unique signal patterns, a | delimiter, and finally the four digit
 // output value.
 fn parse_line(input: &str) -> ([Set<char>; 10], [Set<char>; 4]) {
-    let mut parts = input.split('|');
-
-    fn to_set(split: &mut Split<char>) -> Vec<Set<char>> {
-        split
-            .next()
-            .unwrap()
+    fn sets(input: &str) -> Vec<Set<char>> {
+        input
             .split_whitespace()
             .map(|pattern| pattern.chars().collect::<Set<_>>())
             .collect()
     }
 
+    let (signal_patterns, output_values) = input.split_once('|').unwrap();
     (
-        to_set(&mut parts).try_into().unwrap(),
-        to_set(&mut parts).try_into().unwrap(),
+        sets(signal_patterns).try_into().unwrap(),
+        sets(output_values).try_into().unwrap(),
     )
 }
 

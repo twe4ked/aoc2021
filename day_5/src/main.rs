@@ -39,18 +39,12 @@ fn parse(input: &str) -> Vec<(Point, Point)> {
         .lines()
         .map(|line| {
             // x1,y1 -> x2,y2
-            let mut parts = line.split(" -> ");
-            let mut x1y1 = parts.next().unwrap().split(',');
-            let mut x2y2 = parts.next().unwrap().split(',');
+            let (x1y1, x2y2) = line.split_once(" -> ").unwrap();
+            let (x1, y1) = x1y1.split_once(',').unwrap();
+            let (x2, y2) = x2y2.split_once(',').unwrap();
             (
-                Point::new(
-                    x1y1.next().unwrap().parse().unwrap(),
-                    x1y1.next().unwrap().parse().unwrap(),
-                ),
-                Point::new(
-                    x2y2.next().unwrap().parse().unwrap(),
-                    x2y2.next().unwrap().parse().unwrap(),
-                ),
+                Point::new(x1.parse().unwrap(), y1.parse().unwrap()),
+                Point::new(x2.parse().unwrap(), y2.parse().unwrap()),
             )
         })
         .collect()

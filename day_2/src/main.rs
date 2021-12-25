@@ -9,9 +9,8 @@ fn main() {
     let input: Vec<_> = include_str!("../input")
         .lines()
         .map(|l| {
-            let mut parts = l.split(' ');
-            let dir = parts.next().unwrap();
-            let num = parts.next().unwrap().parse::<i32>().unwrap();
+            let (dir, num) = l.split_once(' ').unwrap();
+            let num = num.parse::<i32>().unwrap();
             match dir {
                 "up" => Direction::Up(num),
                 "down" => Direction::Down(num),

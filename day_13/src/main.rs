@@ -2,14 +2,11 @@ use std::fmt::Write;
 
 fn main() {
     let input = include_str!("../input");
-    let mut parts = input.split("\n\n");
+    let (positions, fold_instructions) = input.split_once("\n\n").unwrap();
 
-    let positions = parts.next().unwrap();
     let mut grid = Grid::new(positions);
 
-    let fold_instructions: Vec<_> = parts
-        .next()
-        .unwrap()
+    let fold_instructions: Vec<_> = fold_instructions
         .lines()
         .map(|line| {
             let mut parts = line.split('=');

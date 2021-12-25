@@ -42,7 +42,6 @@ fn main() {
         // equally common, keep values with a 1 in the position being considered.
         if oxygen_generator_rating.len() > 1 {
             let (zeros, ones) = count_zeros_and_ones(&oxygen_generator_rating, i);
-            dbg!((zeros, ones));
             if zeros > ones {
                 oxygen_generator_rating.retain(|n| n >> i & 1 == 0);
             } else {

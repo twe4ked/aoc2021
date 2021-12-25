@@ -29,10 +29,8 @@ struct Board {
 }
 
 impl Board {
-    fn new(numbers: Vec<Number>) -> Self {
-        Self {
-            numbers: numbers.try_into().unwrap(),
-        }
+    fn new(numbers: [Number; 25]) -> Self {
+        Self { numbers }
     }
 
     fn mark(&mut self, value: u8) {
@@ -72,37 +70,31 @@ impl Board {
 }
 
 fn main() {
-    let input = include_str!("../input");
+    let (numbers, boards_str) = include_str!("../input").split_once("\n\n").unwrap();
 
-    let numbers: Vec<_> = input
-        .lines()
-        .next()
-        .unwrap()
-        .split(',')
-        .map(|n| n.parse::<u8>().unwrap())
+    let mut boards: Vec<_> = (0..)
+        .step_by(25)
+        .into_iter()
+        .map_while(|i| {
+            let b: Vec<_> = boards_str
+                .split_whitespace()
+                .by_ref()
+                .skip(i)
+                .take(25)
+                .map(|n| Number::new(n.parse::<u8>().unwrap()))
+                .collect();
+            if b.is_empty() {
+                None
+            } else {
+                Some(Board::new(b.try_into().unwrap()))
+            }
+        })
         .collect();
-
-    let mut iter = input
-        .split_whitespace()
-        // Skip numbers line
-        .skip(1);
-    let mut boards = Vec::new();
-    loop {
-        let b: Vec<_> = iter
-            .by_ref()
-            .take(25)
-            .map(|n| Number::new(n.parse::<u8>().unwrap()))
-            .collect();
-        if b.is_empty() {
-            break;
-        }
-        boards.push(Board::new(b));
-    }
 
     let mut part_1 = None;
     let mut part_2 = None;
 
-    for n in numbers {
+    for n in numbers.split(',').map(|n| n.parse::<u8>().unwrap()) {
         for board in boards.iter_mut().filter(|b| !b.finished()) {
             board.mark(n);
 
